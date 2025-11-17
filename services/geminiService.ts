@@ -55,12 +55,14 @@ export const getGroundedResponse = async (
     const groundingMetadata = genAIResponse.candidates?.[0]?.groundingMetadata;
     const groundingChunks: GroundingChunk[] = groundingMetadata?.groundingChunks || [];
 
+    // FIX: Handle optional `uri` and `title` from GroundingChunk type.
+    // Only create sources for chunks that have a valid URI.
     const sources: Source[] = groundingChunks.map(chunk => {
-      if (chunk.web) {
-        return { uri: chunk.web.uri, title: chunk.web.title, type: 'web' as const };
+      if (chunk.web && chunk.web.uri) {
+        return { uri: chunk.web.uri, title: chunk.web.title ?? '', type: 'web' as const };
       }
-      if (chunk.maps) {
-        return { uri: chunk.maps.uri, title: chunk.maps.title, type: 'maps' as const };
+      if (chunk.maps && chunk.maps.uri) {
+        return { uri: chunk.maps.uri, title: chunk.maps.title ?? '', type: 'maps' as const };
       }
       return null;
     }).filter((source): source is Source => source !== null);

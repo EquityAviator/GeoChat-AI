@@ -2,6 +2,7 @@
   "name": "GeoChat AI",
   "description": "An AI-powered chatbot that provides up-to-date answers using Google Search and interactive, location-aware responses using Google Maps.",
   "requestFramePermissions": [
-    "geolocation"
+    "geolocation",
+    "microphone"
   ]
 }
